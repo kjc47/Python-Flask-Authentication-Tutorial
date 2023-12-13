@@ -1,16 +1,38 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
 </head>
-
 <body>
-    <h1>Hello you are logged in.</h1>
-    <a href="{{url_for('logout')}}">Press here to logout</a>
-</body>
+    <h1>Hello, you are logged in.</h1>
+    <a href="{{ url_for('logout') }}">Press here to logout</a>
 
+    <!-- Attendance Form -->
+    <h2>Log Your Attendance</h2>
+    <form action="{{ url_for('dashboard') }}" method="post">
+        {{ form.hidden_tag() }}
+        <p>
+            {{ form.date.label }}<br>
+            {{ form.date(size=20) }}<br>
+            {% for error in form.date.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>{{ form.submit() }}</p>
+    </form>
+
+    <!-- Display Logged Attendance -->
+    <h2>Your Attendance Records</h2>
+    <ul>
+        {% for attendance in user_attendance %}
+        <li>{{ attendance.date.strftime('%Y-%m-%d') }}</li>
+        {% else %}
+        <li>No attendance records found.</li>
+        {% endfor %}
+    </ul>
+
+</body>
 </html>
